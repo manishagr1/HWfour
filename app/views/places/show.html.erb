@@ -1,16 +1,60 @@
-<h1><%= @place["name"] %></h1>
+<!DOCTYPE html>
+<html>
 
-<h2>My Posts</h2>
-<% for post in @posts %>
-  <h3><%= post["title"] %></h3>
-  <h4><%= post["posted_on"] %></h4>
-  <p><%= post["description"] %></p>
-<% end %>
+<% if @current_user%>
 
-<p>
-  <a href="/posts/new?place_id=<%= @place["id"] %>">New Post</a>
-</p>
+    <h1><%= @place["name"] %></h1>
 
-<p>
-  <a href="/places">Back to All Places</a>
-</p>
+    <h2>My Posts</h2>
+          <head>
+            <meta charset="utf-8">
+            <title>Travel Posts</title>
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+            <style>
+              .fixed-width-container {
+                max-width: 1200px;
+                margin: 0 auto;
+              }
+
+              .post-section {
+                padding: 20px;
+                margin-bottom: 20px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+              }
+            </style>
+          </head>
+          <body>
+            <div class="fixed-width-container">
+              <div class="row">
+              <% for post in @posts %>
+                  <div class="col-lg-4">
+                    <div class="post-section">
+                          <h3><%= post["title"] %></h3>
+                          <h4><%= post["posted_on"] %></h4>
+                          <p><%= post["description"] %></p>
+                          <% if post.uploaded_image.attached? %>
+                            <img src="<%= url_for(post.uploaded_image) %>" class="img-fluid">
+                          <% else %>
+                            <img src="<%= post["image"] %>" class="img-fluid">
+                          <% end %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.bundle.min.js"></script>
+          </body>
+          </html>
+    <p>
+      <a href="/posts/new?place_id=<%= @place["id"] %>">New Post</a>
+    </p>
+
+    <p>
+      <a href="/places">Back to All Places</a>
+    </p>
+<% else %>
+    <p> You must be logged in!</p>
+<%end%>
+
+</html>
